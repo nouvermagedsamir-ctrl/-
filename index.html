@@ -1,0 +1,827 @@
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الاختبار التقييمي النهائي في اللغة العربية</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            font-family: 'Cairo', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        @keyframes pulse-subtle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .timer-warning {
+            animation: pulse-subtle 0.6s infinite ease-in-out;
+            color: #ef4444 !important;
+            border-color: #ef4444 !important;
+        }
+
+        .option-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .option-card:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.15);
+        }
+
+        /* Circular timer animation */
+        .timer-circle {
+            transition: stroke-dashoffset 1s linear, stroke 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-center items-center p-3 sm:p-6 relative overflow-x-hidden selection:bg-indigo-500 selection:text-white">
+
+    <!-- Background Glows -->
+    <div class="fixed top-[-10%] left-[-10%] w-72 sm:w-96 h-72 sm:h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-72 sm:w-96 h-72 sm:h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-2xl bg-slate-900/90 backdrop-blur-xl border border-slate-800 rounded-3xl shadow-2xl p-5 sm:p-8 relative z-10">
+        
+        <!-- ================= 1. START SCREEN ================= -->
+        <section id="startScreen" class="text-center py-4">
+            <div class="inline-flex p-4 bg-indigo-500/10 rounded-2xl border border-indigo-500/20 mb-4 text-indigo-400">
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                </svg>
+            </div>
+            
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white mb-2">الاختبار التقييمي للغة العربية</h1>
+            <p class="text-slate-400 text-sm sm:text-base mb-6">قواعد وتراكيب ومعاني مفردات وتطوير الذات</p>
+
+            <!-- Instructions Box -->
+            <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 sm:p-5 text-right text-xs sm:text-sm text-slate-300 space-y-2.5 mb-6">
+                <div class="flex items-center gap-2 font-bold text-amber-400 mb-1">
+                    <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                    تعليمات هامة للاختبار:
+                </div>
+                <div class="flex items-start gap-2">
+                    <span class="text-indigo-400 font-bold">•</span>
+                    <span>الاختبار يتكون من <strong>25 سؤالاً</strong> من متعدد.</span>
+                </div>
+                <div class="flex items-start gap-2">
+                    <span class="text-indigo-400 font-bold">•</span>
+                    <span>المدة الزمنية المخصصة لكل سؤال: <strong class="text-amber-300">20 ثانية فقط</strong>.</span>
+                </div>
+                <div class="flex items-start gap-2">
+                    <span class="text-indigo-400 font-bold">•</span>
+                    <span>إذا انتهى الوقت ينتقل النظام تلقائياً للسؤال التالي.</span>
+                </div>
+                <div class="flex items-start gap-2 text-rose-300">
+                    <span class="text-rose-400 font-bold">•</span>
+                    <span><strong>تنبيه:</strong> لا يمكن إعادة الاختبار مرة أخرى بعد البدء أو الانتهاء منه.</span>
+                </div>
+            </div>
+
+            <!-- Name Input Form -->
+            <div class="space-y-4">
+                <div class="text-right">
+                    <label for="studentNameInput" class="block text-xs sm:text-sm font-semibold text-slate-300 mb-1.5 mr-1">الاسم الكامل للطالب / الطالبة:</label>
+                    <input type="text" id="studentNameInput" dir="rtl" placeholder="اكتب اسمك الثلاثي أو الرباعي هنا..." 
+                           class="w-full px-4 py-3.5 bg-slate-800/90 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm sm:text-base">
+                    <p id="nameError" class="text-rose-400 text-xs mt-1.5 hidden text-right pr-1">يرجى كتابة اسمك الثلاثي على الأقل لبدء الاختبار.</p>
+                </div>
+
+                <button id="startBtn" class="w-full py-4 bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-600/30 transition duration-200 transform active:scale-[0.99] flex items-center justify-center gap-2 text-base sm:text-lg">
+                    <span>بدء الاختبار الآن</span>
+                    <svg class="w-5 h-5 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= 2. QUIZ SCREEN ================= -->
+        <section id="quizScreen" class="hidden">
+            <!-- Header bar: Progress + Timer -->
+            <div class="flex items-center justify-between gap-4 pb-5 border-b border-slate-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-indigo-400 text-sm">
+                        <span id="currentQIndex">1</span>/<span id="totalQuestions">25</span>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-400">الطالب الممتحن</p>
+                        <h4 id="displayStudentName" class="text-sm font-bold text-white truncate max-w-[140px] sm:max-w-xs">--</h4>
+                    </div>
+                </div>
+
+                <!-- Circular Timer -->
+                <div class="relative w-14 h-14 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                        <path class="text-slate-800" stroke-width="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                        <path id="timerCircle" class="timer-circle text-indigo-500" stroke-dasharray="100, 100" stroke-dashoffset="0" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                    </svg>
+                    <span id="timerText" class="absolute font-extrabold text-sm text-indigo-300">20</span>
+                </div>
+            </div>
+
+            <!-- Question Progress Bar -->
+            <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden my-5">
+                <div id="progressBar" class="bg-gradient-to-r from-indigo-500 to-purple-500 h-full transition-all duration-300" style="width: 4%;"></div>
+            </div>
+
+            <!-- Question Text -->
+            <div class="min-h-[90px] flex items-center justify-center text-center my-4">
+                <h2 id="questionText" class="text-lg sm:text-xl font-bold text-slate-100 leading-relaxed px-2">
+                    جاري تحميل السؤال...
+                </h2>
+            </div>
+
+            <!-- Answer Options Grid -->
+            <div id="optionsContainer" class="grid grid-cols-1 gap-3 my-6">
+                <!-- Dynamically populated options -->
+            </div>
+
+            <!-- Feedback Notice (during quick lock after click) -->
+            <div class="text-center min-h-[24px]">
+                <span id="instantFeedback" class="text-xs font-semibold text-slate-400 transition-opacity opacity-0"></span>
+            </div>
+        </section>
+
+        <!-- ================= 3. FINAL RESULT SCREEN ================= -->
+        <section id="resultScreen" class="hidden text-center py-4">
+            <div id="badgeIcon" class="inline-flex p-4 rounded-3xl mb-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+                <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+            </div>
+
+            <span class="inline-block px-3 py-1 bg-slate-800 text-slate-300 text-xs rounded-full border border-slate-700 mb-2">بطاقة النتيجة الرسمية</span>
+            
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-1" id="resStudentName">اسم الطالب</h2>
+            <p id="resStatusMsg" class="text-indigo-300 text-sm font-medium mb-6">أكملت جميع أسئلة الاختبار بنجاح</p>
+
+            <!-- Score Showcase -->
+            <div class="bg-gradient-to-b from-slate-800/80 to-slate-900/90 border border-slate-700/80 rounded-2xl p-6 mb-6">
+                <div class="text-xs uppercase tracking-wider text-slate-400 mb-1">الدرجة النهائية المستحقة</div>
+                <div class="flex items-baseline justify-center gap-2">
+                    <span id="finalScoreNum" class="text-5xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-indigo-300">0</span>
+                    <span class="text-xl sm:text-2xl font-bold text-slate-500">/ 25</span>
+                </div>
+                
+                <div class="mt-4 pt-4 border-t border-slate-800 flex justify-around text-center">
+                    <div>
+                        <div class="text-xs text-slate-400 mb-0.5">النسبة المئوية</div>
+                        <div id="finalPercentage" class="text-base sm:text-lg font-bold text-white">0%</div>
+                    </div>
+                    <div class="w-px bg-slate-800"></div>
+                    <div>
+                        <div class="text-xs text-slate-400 mb-0.5">التقدير العام</div>
+                        <div id="finalRating" class="text-base sm:text-lg font-bold text-emerald-400">--</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Breakdown stats -->
+            <div class="grid grid-cols-3 gap-2 text-xs sm:text-sm mb-6">
+                <div class="bg-emerald-500/10 border border-emerald-500/20 p-2.5 rounded-xl">
+                    <div class="text-emerald-400 font-bold" id="statCorrect">0</div>
+                    <div class="text-slate-400 text-[11px] sm:text-xs">إجابات صحيحة</div>
+                </div>
+                <div class="bg-rose-500/10 border border-rose-500/20 p-2.5 rounded-xl">
+                    <div class="text-rose-400 font-bold" id="statWrong">0</div>
+                    <div class="text-slate-400 text-[11px] sm:text-xs">إجابات خاطئة</div>
+                </div>
+                <div class="bg-amber-500/10 border border-amber-500/20 p-2.5 rounded-xl">
+                    <div class="text-amber-400 font-bold" id="statTimeout">0</div>
+                    <div class="text-slate-400 text-[11px] sm:text-xs">انتهى الوقت</div>
+                </div>
+            </div>
+
+            <!-- Lockdown Alert Notice -->
+            <div class="bg-rose-950/40 border border-rose-900/60 rounded-xl p-3.5 text-xs text-rose-300 flex items-center justify-center gap-2">
+                <svg class="w-4 h-4 text-rose-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path></svg>
+                <span>تم تسجيل وإغلاق هذا الاختبار نهائياً، ولا يُسمح بإعادة المحاولة.</span>
+            </div>
+        </section>
+
+        <!-- ================= 4. ALREADY COMPLETED SCREEN ================= -->
+        <section id="lockedScreen" class="hidden text-center py-6">
+            <div class="inline-flex p-4 rounded-3xl mb-4 bg-rose-500/10 border border-rose-500/20 text-rose-400">
+                <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+            </div>
+            <h2 class="text-2xl font-black text-white mb-2">عذراً! لا يمكن إعادة الاختبار</h2>
+            <p class="text-slate-400 text-sm mb-6 leading-relaxed max-w-md mx-auto">
+                لقد تم أداء هذا الاختبار مسبقاً وتوثيق نتيجتك في هذا المتصفح. لا يمكن تكرار تقديم الامتحان وفقاً للتعليمات.
+            </p>
+
+            <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-5 max-w-sm mx-auto mb-6">
+                <div class="text-xs text-slate-400 mb-1">بيانات المحاولة السابقة المسجلة:</div>
+                <div id="lockedStudentName" class="text-lg font-bold text-white mb-2">--</div>
+                <div class="text-3xl font-black text-indigo-400 mb-1">
+                    <span id="lockedScore">0</span> / 25
+                </div>
+                <div id="lockedDate" class="text-xs text-slate-500">التاريخ: --</div>
+            </div>
+
+            <p class="text-xs text-slate-500">إذا كان هناك خطأ يرجى مراجعة معلم المادة المسؤول.</p>
+        </section>
+
+    </main>
+
+    <!-- Canvas for Confetti -->
+    <canvas id="confettiCanvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+    <footer class="mt-6 text-center text-xs text-slate-500 relative z-10">
+        نظام الاختبارات الإلكترونية الموحد &bull; 25 سؤالاً اختيار من متعدد
+    </footer>
+
+    <script>
+        /* ================= 25 QUESTIONS DATA ================= */
+        const QUIZ_QUESTIONS = [
+            {
+                q: "النجاح في الحياة ليس صدفة، بل هو نتيجة قرارات:",
+                options: ["عشوائية", "مدروسة وشجاعة", "متسرعة", "متأخرة"],
+                correct: 1
+            },
+            {
+                q: "معنى كلمة \"حاسمة\" في قولنا: \"اتخاذ قرارات حاسمة\":",
+                options: ["هينة", "قاطعة", "ضعيفة", "بطيئة"],
+                correct: 1
+            },
+            {
+                q: "الشخص المتردد في اتخاذ قراراته يختار غالباً:",
+                options: ["الاستمرار والتعلم", "التراجع والانتظار", "المغامرة والجرأة", "التخطيط الجيد"],
+                correct: 1
+            },
+            {
+                q: "مضاد كلمة \"شجاعة\":",
+                options: ["قوة", "جبانة", "أمل", "نجاح"],
+                correct: 1
+            },
+            {
+                q: "جمع كلمة \"نشاط\":",
+                options: ["أنشطة", "نشوات", "أنشط", "نشاطات"],
+                correct: 0
+            },
+            {
+                q: "كلمة (أبوك) في جملة \"أبوك رجل كريم\" تعرب:",
+                options: ["مفعولاً به", "اسماً مجروراً", "مبتدأ", "فاعلاً"],
+                correct: 2
+            },
+            {
+                q: "علامة إعراب الأسماء الخمسة في حالة الرفع هي:",
+                options: ["الألف", "الواو", "الياء", "الضمة المقدرة"],
+                correct: 1
+            },
+            {
+                q: "\"رأيت أباك في المتجر\".. إعراب كلمة (أباك):",
+                options: ["فاعل مرفوع بالواو", "مفعول به منصوب بالألف", "اسم مجرور بالياء", "مبتدأ مرفوع بالواو"],
+                correct: 1
+            },
+            {
+                q: "التف التلاميذ حول المعلمة بـ (دهشة ولهفة).. معنى كلمة (لهفة):",
+                options: ["خوف شديد", "شوق وتطلع", "حزن عميق", "ملل وضجر"],
+                correct: 1
+            },
+            {
+                q: "الكلمة التي اختارتها فريدة من صندوق التجربة هي:",
+                options: ["سلام", "خير", "أمل", "نجاح"],
+                correct: 2
+            },
+            {
+                q: "مضاد كلمة \"التفاؤل\":",
+                options: ["الأمل", "التشاؤم", "السعادة", "اليقين"],
+                correct: 1
+            },
+            {
+                q: "نوع الهمزة في كلمة (سأل):",
+                options: ["همزة على الواو", "همزة على الألف", "همزة على الياء", "همزة متطرفة"],
+                correct: 1
+            },
+            {
+                q: "الكلمات الطيبة تشبه:",
+                options: ["الرياح القوية", "البذور التي تزرعها في القلوب", "الأصوات العالية", "الأوراق التالفة"],
+                correct: 1
+            },
+            {
+                q: "المسؤولية تعني:",
+                options: ["التهرب من الواجبات", "تحمل نتائج الأفعال دون تأخير", "إلقاء الأعذار", "تأجيل المهام"],
+                correct: 1
+            },
+            {
+                q: "مفرد كلمة \"أقوال\":",
+                options: ["قائل", "قول", "مقولة", "تقويل"],
+                correct: 1
+            },
+            {
+                q: "لكي تكون شخصاً مسؤولاً وموثوقاً، يجب عليك:",
+                options: ["أن تفعل ما تقول وتلتزم بوعودك", "أن تخلف وعدك دائماً", "أن تؤجل أعمالك للغد", "أن تلوم أصدقاءك"],
+                correct: 0
+            },
+            {
+                q: "مضاد كلمة \"تراكم\" في قولنا (تراكم الأشياء):",
+                options: ["تفرق وتناثر", "تجمع", "زيادة", "تكاثر"],
+                correct: 0
+            },
+            {
+                q: "(سلمت على أبيك).. علامة جر الأسماء الخمسة هي:",
+                options: ["الياء", "الكسرة", "الألف", "الواو"],
+                correct: 0
+            },
+            {
+                q: "أي من الآتي يُعد من (الأسماء الخمسة):",
+                options: ["ولد", "حموك", "كتاب", "معلم"],
+                correct: 1
+            },
+            {
+                q: "معنى كلمة (يزاوله) في النص:",
+                options: ["يتركه", "يمارسه", "يخافه", "يكرهه"],
+                correct: 1
+            },
+            {
+                q: "التخطيط الجيد للوقت يساعد على:",
+                options: ["تراكم الأشياء وضياع الوقت", "إنجاز ما تريده في الوقت المحدد", "الفشل في تحقيق الأهداف", "كثرة الأعذار"],
+                correct: 1
+            },
+            {
+                q: "جمع كلمة \"طريق\":",
+                options: ["طارق", "طرق", "أطراف", "طريقات"],
+                correct: 1
+            },
+            {
+                q: "الكلمات الجارحة تترك آثاراً:",
+                options: ["جميلة", "يسهل محوها", "يصعب محوها", "مفيدة"],
+                correct: 2
+            },
+            {
+                q: "من صفات الإنسان المسؤول:",
+                options: ["يحترم الوقت ويخطط لأعماله", "تؤجل واجباته دائماً", "لا يبالي بمواعيده", "يعتمد على الآخرين كلياً"],
+                correct: 0
+            },
+            {
+                q: "الفرق بين الناجح والمتردد هو أن الناجح يختار:",
+                options: ["التراجع والخوف", "الاستمرار والتعلم", "الشك والتردد", "الهروب من المواجهة"],
+                correct: 1
+            }
+        ];
+
+        /* ================= WEB AUDIO API SOUND SYSTEM ================= */
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playSound(type) {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+
+                if (type === 'click') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, now);
+                    osc.frequency.exponentialRampToValueAtTime(300, now + 0.08);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                } else if (type === 'correct') {
+                    // Two tones arpeggio
+                    [523.25, 659.25, 783.99].forEach((freq, idx) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+                        gain.gain.setValueAtTime(0.15, now + idx * 0.07);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.25);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(now + idx * 0.07);
+                        osc.stop(now + idx * 0.07 + 0.25);
+                    });
+                } else if (type === 'wrong' || type === 'timeout') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(180, now);
+                    osc.frequency.linearRampToValueAtTime(110, now + 0.3);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } else if (type === 'tick') {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(880, now);
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.linearRampToValueAtTime(0.001, now + 0.04);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.04);
+                } else if (type === 'fanfare') {
+                    const notes = [440, 554.37, 659.25, 880];
+                    notes.forEach((freq, i) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, now + i * 0.12);
+                        gain.gain.setValueAtTime(0.2, now + i * 0.12);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.12 + 0.5);
+                        osc.connect(gain);
+                        gain.connect(ctx.destination);
+                        osc.start(now + i * 0.12);
+                        osc.stop(now + i * 0.12 + 0.5);
+                    });
+                }
+            } catch (e) {
+                // Ignore audio restriction errors
+            }
+        }
+
+        /* ================= APPLICATION STATE ================= */
+        const STORAGE_KEY = 'ARABIC_EXAM_RECORD_V1';
+        const QUESTION_TIME_LIMIT = 20; // 20 seconds per question
+
+        let studentName = '';
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let correctCount = 0;
+        let wrongCount = 0;
+        let timeoutCount = 0;
+        let timerInterval = null;
+        let timeLeft = QUESTION_TIME_LIMIT;
+        let isAnsweringLocked = false;
+
+        // Choice labels in Arabic
+        const choiceLabels = ['أ', 'ب', 'ج', 'د'];
+
+        // DOM Elements
+        const startScreen = document.getElementById('startScreen');
+        const quizScreen = document.getElementById('quizScreen');
+        const resultScreen = document.getElementById('resultScreen');
+        const lockedScreen = document.getElementById('lockedScreen');
+
+        const studentNameInput = document.getElementById('studentNameInput');
+        const nameError = document.getElementById('nameError');
+        const startBtn = document.getElementById('startBtn');
+
+        const currentQIndexEl = document.getElementById('currentQIndex');
+        const displayStudentName = document.getElementById('displayStudentName');
+        const timerText = document.getElementById('timerText');
+        const timerCircle = document.getElementById('timerCircle');
+        const progressBar = document.getElementById('progressBar');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const instantFeedback = document.getElementById('instantFeedback');
+
+        /* ================= CHECK LOCK STATUS ON LOAD ================= */
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedRecord = localStorage.getItem(STORAGE_KEY);
+            if (savedRecord) {
+                showLockedScreen(JSON.parse(savedRecord));
+            }
+        });
+
+        function showLockedScreen(record) {
+            startScreen.classList.add('hidden');
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            lockedScreen.classList.remove('hidden');
+
+            document.getElementById('lockedStudentName').textContent = record.name;
+            document.getElementById('lockedScore').textContent = record.score;
+            document.getElementById('lockedDate').textContent = `تاريخ الإنهاء: ${record.date}`;
+        }
+
+        /* ================= START EXAM ================= */
+        startBtn.addEventListener('click', () => {
+            const name = studentNameInput.value.trim();
+            if (name.length < 5) {
+                nameError.classList.remove('hidden');
+                studentNameInput.focus();
+                return;
+            }
+            nameError.classList.add('hidden');
+            studentName = name;
+            displayStudentName.textContent = studentName;
+
+            // In-flight lockdown tag (if refreshed, marks exam completed)
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                name: studentName,
+                score: 0,
+                date: new Date().toLocaleString('ar-EG'),
+                interrupted: true
+            }));
+
+            playSound('click');
+            startScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+
+            loadQuestion(0);
+        });
+
+        /* ================= LOAD QUESTION ================= */
+        function loadQuestion(index) {
+            if (index >= QUIZ_QUESTIONS.length) {
+                finishQuiz();
+                return;
+            }
+
+            currentQuestionIndex = index;
+            isAnsweringLocked = false;
+            instantFeedback.style.opacity = '0';
+
+            const qData = QUIZ_QUESTIONS[index];
+
+            // Update Progress UI
+            currentQIndexEl.textContent = index + 1;
+            const progressPct = ((index + 1) / QUIZ_QUESTIONS.length) * 100;
+            progressBar.style.width = `${progressPct}%`;
+
+            // Set question text
+            questionText.textContent = qData.q;
+
+            // Render options
+            optionsContainer.innerHTML = '';
+            qData.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = `option-card w-full p-4 bg-slate-800/80 hover:bg-slate-750 border border-slate-700/80 rounded-2xl flex items-center justify-between text-right text-slate-200 transition group focus:outline-none focus:ring-2 focus:ring-indigo-500`;
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3 w-full">
+                        <span class="w-8 h-8 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center font-bold text-xs text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white transition flex-shrink-0">${choiceLabels[i]}</span>
+                        <span class="text-sm sm:text-base font-semibold text-slate-100 flex-1 leading-snug">${opt}</span>
+                    </div>
+                `;
+                btn.addEventListener('click', () => handleAnswerSelect(i));
+                optionsContainer.appendChild(btn);
+            });
+
+            // Start Timer
+            startTimer();
+        }
+
+        /* ================= TIMER HANDLING ================= */
+        function startTimer() {
+            clearInterval(timerInterval);
+            timeLeft = QUESTION_TIME_LIMIT;
+            updateTimerDisplay();
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+
+                if (timeLeft <= 5 && timeLeft > 0) {
+                    playSound('tick');
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    handleTimeout();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            timerText.textContent = timeLeft;
+
+            // Dash offset computation for SVG circle (circumference = 100)
+            const offset = 100 - (timeLeft / QUESTION_TIME_LIMIT) * 100;
+            timerCircle.style.strokeDashoffset = offset;
+
+            // Timer color states
+            if (timeLeft <= 5) {
+                timerCircle.classList.remove('text-indigo-500', 'text-amber-400');
+                timerCircle.classList.add('text-rose-500');
+                timerText.classList.remove('text-indigo-300', 'text-amber-300');
+                timerText.classList.add('timer-warning');
+            } else if (timeLeft <= 10) {
+                timerCircle.classList.remove('text-indigo-500', 'text-rose-500');
+                timerCircle.classList.add('text-amber-400');
+                timerText.classList.remove('timer-warning', 'text-indigo-300');
+                timerText.classList.add('text-amber-300');
+            } else {
+                timerCircle.classList.remove('text-amber-400', 'text-rose-500');
+                timerCircle.classList.add('text-indigo-500');
+                timerText.classList.remove('timer-warning', 'text-amber-300', 'text-rose-500');
+                timerText.classList.add('text-indigo-300');
+            }
+        }
+
+        /* ================= USER SELECTION ================= */
+        function handleAnswerSelect(selectedIndex) {
+            if (isAnsweringLocked) return;
+            isAnsweringLocked = true;
+            clearInterval(timerInterval);
+
+            const qData = QUIZ_QUESTIONS[currentQuestionIndex];
+            const buttons = optionsContainer.querySelectorAll('button');
+            const isCorrect = (selectedIndex === qData.correct);
+
+            // Visual feedback on buttons
+            buttons.forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === qData.correct) {
+                    btn.classList.remove('bg-slate-800/80', 'border-slate-700/80');
+                    btn.classList.add('bg-emerald-900/60', 'border-emerald-500', 'text-emerald-200');
+                } else if (idx === selectedIndex) {
+                    btn.classList.remove('bg-slate-800/80', 'border-slate-700/80');
+                    btn.classList.add('bg-rose-900/60', 'border-rose-500', 'text-rose-200');
+                } else {
+                    btn.classList.add('opacity-40');
+                }
+            });
+
+            if (isCorrect) {
+                score++;
+                correctCount++;
+                playSound('correct');
+                instantFeedback.textContent = "✓ إجابة صحيحة";
+                instantFeedback.className = "text-xs font-bold text-emerald-400 transition-opacity opacity-100";
+            } else {
+                wrongCount++;
+                playSound('wrong');
+                instantFeedback.textContent = "✗ إجابة خاطئة";
+                instantFeedback.className = "text-xs font-bold text-rose-400 transition-opacity opacity-100";
+            }
+
+            // Brief pause to view result before advancing
+            setTimeout(() => {
+                loadQuestion(currentQuestionIndex + 1);
+            }, 1000);
+        }
+
+        /* ================= TIMEOUT ================= */
+        function handleTimeout() {
+            if (isAnsweringLocked) return;
+            isAnsweringLocked = true;
+            timeoutCount++;
+            playSound('timeout');
+
+            const qData = QUIZ_QUESTIONS[currentQuestionIndex];
+            const buttons = optionsContainer.querySelectorAll('button');
+
+            buttons.forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === qData.correct) {
+                    btn.classList.remove('bg-slate-800/80');
+                    btn.classList.add('bg-amber-900/50', 'border-amber-500', 'text-amber-200');
+                } else {
+                    btn.classList.add('opacity-30');
+                }
+            });
+
+            instantFeedback.textContent = "انتهى الوقت المخصص لهذا السؤال!";
+            instantFeedback.className = "text-xs font-bold text-amber-400 transition-opacity opacity-100";
+
+            setTimeout(() => {
+                loadQuestion(currentQuestionIndex + 1);
+            }, 1200);
+        }
+
+        /* ================= FINISH QUIZ & DISPLAY SCORE ================= */
+        function finishQuiz() {
+            clearInterval(timerInterval);
+
+            // Permanent lock save
+            const finalRecord = {
+                name: studentName,
+                score: score,
+                correct: correctCount,
+                wrong: wrongCount,
+                timeout: timeoutCount,
+                percentage: Math.round((score / QUIZ_QUESTIONS.length) * 100),
+                date: new Date().toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(finalRecord));
+
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+
+            // Set final fields
+            document.getElementById('resStudentName').textContent = studentName;
+            document.getElementById('finalScoreNum').textContent = score;
+            const pct = finalRecord.percentage;
+            document.getElementById('finalPercentage').textContent = `${pct}%`;
+
+            document.getElementById('statCorrect').textContent = correctCount;
+            document.getElementById('statWrong').textContent = wrongCount;
+            document.getElementById('statTimeout').textContent = timeoutCount;
+
+            // Rating logic
+            const ratingEl = document.getElementById('finalRating');
+            const resStatusMsg = document.getElementById('resStatusMsg');
+            let ratingText = '';
+            
+            if (pct >= 90) {
+                ratingText = 'ممتاز مع مرتبة الشرف';
+                ratingEl.className = 'text-base sm:text-lg font-bold text-emerald-400';
+                resStatusMsg.textContent = 'أداء استثنائي ومتميز جداً! مبارك لك هذا التفوق.';
+                playSound('fanfare');
+                launchConfetti();
+            } else if (pct >= 80) {
+                ratingText = 'جيد جداً مرتفع';
+                ratingEl.className = 'text-base sm:text-lg font-bold text-teal-400';
+                resStatusMsg.textContent = 'أداء رائع جداً، أحسنت عملاً!';
+                playSound('fanfare');
+                launchConfetti();
+            } else if (pct >= 70) {
+                ratingText = 'جيد جداً';
+                ratingEl.className = 'text-base sm:text-lg font-bold text-indigo-400';
+                resStatusMsg.textContent = 'نتيجة طيبة ومجهود مشكور.';
+                playSound('correct');
+            } else if (pct >= 50) {
+                ratingText = 'مقبول / ناجح';
+                ratingEl.className = 'text-base sm:text-lg font-bold text-amber-400';
+                resStatusMsg.textContent = 'لقد اجتزت الاختبار بنجاح، وتحتاج لمزيد من المراجعة.';
+                playSound('correct');
+            } else {
+                ratingText = 'يحتاج لمزيد من الجهد والمراجعة';
+                ratingEl.className = 'text-base sm:text-lg font-bold text-rose-400';
+                resStatusMsg.textContent = 'حظاً أوفر، نرجو إعادة مذاكرة الدروس جيداً.';
+                playSound('wrong');
+            }
+            ratingEl.textContent = ratingText;
+        }
+
+        /* ================= CONFETTI CELEBRATION ================= */
+        function launchConfetti() {
+            const canvas = document.getElementById('confettiCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const colors = ['#6366f1', '#a855f7', '#ec4899', '#10b981', '#f59e0b', '#38bdf8'];
+
+            for (let i = 0; i < 90; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height * 0.4,
+                    r: Math.random() * 5 + 3,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    vx: (Math.random() - 0.5) * 14,
+                    vy: (Math.random() - 0.8) * 16,
+                    gravity: 0.35,
+                    alpha: 1,
+                    decay: Math.random() * 0.015 + 0.008
+                });
+            }
+
+            function animateConfetti() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let aliveCount = 0;
+
+                particles.forEach(p => {
+                    if (p.alpha > 0) {
+                        aliveCount++;
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.vy += p.gravity;
+                        p.alpha -= p.decay;
+
+                        ctx.save();
+                        ctx.globalAlpha = Math.max(0, p.alpha);
+                        ctx.fillStyle = p.color;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.restore();
+                    }
+                });
+
+                if (aliveCount > 0) {
+                    requestAnimationFrame(animateConfetti);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+
+            animateConfetti();
+        }
+
+        // Handle window resize for confetti canvas
+        window.addEventListener('resize', () => {
+            const canvas = document.getElementById('confettiCanvas');
+            if (canvas) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+        });
+    </script>
+</body>
+</html>
